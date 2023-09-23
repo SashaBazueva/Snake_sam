@@ -3,6 +3,7 @@
 
 const short WIDTH = 17;
 const short HIGHT = 10;
+const short MAX_SNAKE_LEN = (WIDTH - 3) * (HIGHT - 2);
 
 bool isRunning = true;	//Главная логическая переменная 
 
@@ -21,6 +22,11 @@ char map[] = {
 
 //SNAKE
 short snakeLen = 1;
+char snakeHead = '0';
+char snakeBody = 'O';
+
+int snakeX[MAX_SNAKE_LEN] = { WIDTH / 2 };
+int snakeY[MAX_SNAKE_LEN] = { HIGHT / 2 };
 
 int gotoxy(int x, int y) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
