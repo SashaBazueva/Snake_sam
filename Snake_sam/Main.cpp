@@ -1,7 +1,7 @@
 #include <iostream>
 #include <windows.h>
 
-const short WIDTH = 17;
+const short WIDTH = 16;
 const short HIGHT = 10;
 const short MAX_SNAKE_LEN = (WIDTH - 3) * (HIGHT - 2);
 
@@ -44,6 +44,11 @@ int main() {
 			gotoxy(0, 0);
 			std::cout << "~ length: " << snakeLen << std::endl;
 			time = clock();
+
+			for (short i = 0; i < snakeLen; i++){
+				map[snakeY[i] * WIDTH + snakeX[i]] = snakeHead;
+			}
+
 			std::cout << map;
 		}
 
