@@ -40,10 +40,10 @@ int main() {
 	int time = clock();
 	while (isRunning) {
 
-		if ((clock() - time) / CLOCKS_PER_SEC >= 1) {
+		if ((clock() - time) / CLOCKS_PER_SEC >= 1) {	
+			time = clock();
 			gotoxy(0, 0);
 			std::cout << "~ length: " << snakeLen << std::endl;
-			time = clock();
 
 			for (short i = 0; i < snakeLen; i++){
 				map[snakeY[i] * WIDTH + snakeX[i]] = snakeHead;
