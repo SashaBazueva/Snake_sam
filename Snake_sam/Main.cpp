@@ -27,7 +27,7 @@ char map[] = {
 };
 
 //SNAKE
-short snakeLen = 3;
+short snakeLen = 1;
 char snakeHead = '0';
 char snakeBody = 'O';
 
@@ -86,27 +86,33 @@ int main() {
 			gotoxy(0, 0);
 			std::cout << "~ length: " << snakeLen << std::endl;
 
+			for (short i = snakeLen; i >= 0; --i) {
+				snakeX[i + 1] = snakeX[i];
+				snakeY[i + 1] = snakeY[i];
+			}
+
 			if (snakeDir == LEFT) snakeX[0]--;
 			if (snakeDir == UP) snakeY[0]--;
 			if (snakeDir == RIGHT) snakeX[0]++;
 			if (snakeDir == DOWN) snakeY[0]++;
-
 			
-			map[snakeY[0] * WIDTH + snakeX[0]] = snakeHead;
-			for (short i = 1; i < snakeLen; i++) {
-				map[snakeY[i] * WIDTH + snakeX[i]] = snakeBody;
-			}
-			
-			//map[snakeY[snakeLen] * WIDTH + snakeX[snakeLen]] = ' ';
-			
-						
 			for (short i = 0; i < snakeLen; i++) {
-				snakeX[i + 1] = snakeX[i];
-				snakeY[i + 1] = snakeY[i];
+				if (i == 0) {
+					map[snakeY[i] * WIDTH + snakeX[i]] = snakeHead;
+					std::cout << "head is on " << snakeY[i] * WIDTH + snakeX[i] << std::endl;
+					continue;
+				}
+				map[snakeY[i] * WIDTH + snakeX[i]] = snakeBody;
+				std::cout << "element " << i << " is on " << snakeY[i] * WIDTH + snakeX[i] << std::endl;
 			}
-			
 
 			std::cout << map;
+
+			for (short i = 0; i < snakeLen; i++) {
+				map[snakeY[i] * WIDTH + snakeX[i]] = ' ';
+			}
+			
+			
 		}
 
 	}
