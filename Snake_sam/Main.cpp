@@ -1,6 +1,5 @@
 #include <iostream>
 #include <windows.h>
-#include <winuser.h>
 
 const short WIDTH = 16;
 const short HIGHT = 10;
@@ -28,7 +27,7 @@ char map[] = {
 };
 
 //SNAKE
-short snakeLen = 1;
+short snakeLen = 3;
 char snakeHead = '0';
 char snakeBody = 'O';
 
@@ -89,13 +88,23 @@ int main() {
 
 			if (snakeDir == LEFT) snakeX[0]--;
 			if (snakeDir == UP) snakeY[0]--;
-			if (snakeDir == RIGHT)snakeX[0]++;
-			if (snakeDir == DOWN)snakeY[0]++;
+			if (snakeDir == RIGHT) snakeX[0]++;
+			if (snakeDir == DOWN) snakeY[0]++;
 
-
-			for (short i = 0; i < snakeLen; i++){
-				map[snakeY[i] * WIDTH + snakeX[i]] = snakeHead;
+			
+			map[snakeY[0] * WIDTH + snakeX[0]] = snakeHead;
+			for (short i = 1; i < snakeLen; i++) {
+				map[snakeY[i] * WIDTH + snakeX[i]] = snakeBody;
 			}
+			
+			//map[snakeY[snakeLen] * WIDTH + snakeX[snakeLen]] = ' ';
+			
+						
+			for (short i = 0; i < snakeLen; i++) {
+				snakeX[i + 1] = snakeX[i];
+				snakeY[i + 1] = snakeY[i];
+			}
+			
 
 			std::cout << map;
 		}
