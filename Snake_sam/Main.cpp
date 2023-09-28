@@ -5,11 +5,11 @@ const short WIDTH = 16;
 const short HIGHT = 10;
 const short MAX_SNAKE_LEN = (WIDTH - 3) * (HIGHT - 2);
 
+//Управление(задаем направление в управлении для устремленного движения по направленному вектору)) )
 const short LEFT = 0;
 const short UP = 1;
 const short RIGHT = 2;
 const short DOWN = 3;
-
 
 bool isRunning = true;	//Главная логическая переменная для игры
 
@@ -27,7 +27,7 @@ char map[] = {
 };
 
 //SNAKE
-short snakeLen = 4;
+short snakeLen = 1;
 char snakeUp = '^';
 char snakeLeft = '<';
 char snakeDown = 'v';
@@ -39,6 +39,12 @@ short snakeDir = UP;
 
 int snakeX[MAX_SNAKE_LEN] = { WIDTH / 2 };
 int snakeY[MAX_SNAKE_LEN] = { HIGHT / 2 };
+int snakePos[MAX_SNAKE_LEN] = {};
+
+//FRUIT
+char fruit = '*';
+short fruitPos;
+bool isFruitExist = false;
 
 //Метод для переправления курсора по координатам X и Y
 int gotoxy(short x, short y) {
@@ -46,8 +52,7 @@ int gotoxy(short x, short y) {
 	COORD pos = { x, y };
 	SetConsoleCursorPosition(hConsole, pos);
 	return 0;
-}
-	
+}	
 
 int main() {
 	int time = clock();
@@ -106,31 +111,50 @@ int main() {
 				snakeX[i + 1] = snakeX[i];
 				snakeY[i + 1] = snakeY[i];
 			}
+
 			//Перемещение змейки
 			if (snakeDir == LEFT) snakeX[0]--;
 			if (snakeDir == UP) snakeY[0]--;
 			if (snakeDir == RIGHT) snakeX[0]++;
 			if (snakeDir == DOWN) snakeY[0]++;
-			
+
+			//Создание фрукта
+			if (!isFruitExist) {
+				while (!isFruitExist) {
+					bool isFree = true;
+					fruitPos = (2 + rand() % (WIDTH - 5)) + (2 + rand() % (HIGHT - 4)) * WIDTH;
+					for (short i = 0; i < snakeLen; i++) {
+						if (fruitPos == snakeY[i] * WIDTH + snakeX[i]) {
+							isFree = false;
+						}
+					}
+					if(isFree)isFruitExist = true;
+				}
+			}
+			map[fruitPos] = fruit;
+
 			//Отрисовка змейки на карте
 			for (short i = 0; i < snakeLen; i++) {
 				if (i == 0) {
 					map[snakeY[i] * WIDTH + snakeX[i]] = snakeHead;
-					std::cout << "head is on " << snakeY[i] * WIDTH + snakeX[i] << std::endl;
 					continue;
 				}
 				map[snakeY[i] * WIDTH + snakeX[i]] = snakeBody;
-				std::cout << "element " << i << " is on " << snakeY[i] * WIDTH + snakeX[i] << std::endl;
+			}
+
+			if (snakeY[0] * WIDTH + snakeX[0] == fruitPos) {
+				snakeLen++;
+				isFruitExist = false;
 			}
 
 			//Отрисовка карты
 			std::cout << map;
+			std::cout << "fruit is on " << fruitPos << std::endl;
 
 			//Очищение карты
 			for (short i = 0; i < snakeLen; i++) {
 				map[snakeY[i] * WIDTH + snakeX[i]] = ' ';
 			}
-			
 			
 		}
 
