@@ -1,6 +1,7 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <cstdlib>
 
 const short WIDTH = 16;
 const short HIGHT = 10;
@@ -121,6 +122,7 @@ int main() {
 
 			//Создание фрукта
 			if (!isFruitExist) {
+				srand(clock());
 				while (!isFruitExist) {
 					bool isFree = true;
 					fruitPos = (2 + rand() % (WIDTH - 5)) + (2 + rand() % (HIGHT - 4)) * WIDTH;
