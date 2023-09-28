@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <conio.h>
 
 const short WIDTH = 16;
 const short HIGHT = 10;
@@ -101,7 +102,7 @@ int main() {
 		}
 
 		//Отрисовка карты через каждую секунду
-		if ((clock() - time) / CLOCKS_PER_SEC >= 1) {	
+		if ((clock() - time) / CLOCKS_PER_SEC >= 0.7) {	
 			time = clock();
 			gotoxy(0, 0);
 			std::cout << "~ length: " << snakeLen << std::endl;
@@ -131,6 +132,21 @@ int main() {
 					if(isFree)isFruitExist = true;
 				}
 			}
+
+			//Логика поедания фрукта
+			if (snakeY[0] * WIDTH + snakeX[0] == fruitPos) {
+				snakeLen++;
+				isFruitExist = false;
+			}
+
+			if (snakeX[0] == 0 || snakeY[0] == 0 || snakeX[0] == WIDTH - 2 || snakeY[0] == HIGHT - 1) {
+				isRunning = false;
+			}
+			for (short i = 1; i < snakeLen; i++) {
+				if (snakeY[0] * WIDTH + snakeX[0] == snakeY[i] * WIDTH + snakeX[i]) isRunning = false;
+			}
+
+			//Отрисовка фрукта на карте
 			map[fruitPos] = fruit;
 
 			//Отрисовка змейки на карте
@@ -142,14 +158,8 @@ int main() {
 				map[snakeY[i] * WIDTH + snakeX[i]] = snakeBody;
 			}
 
-			if (snakeY[0] * WIDTH + snakeX[0] == fruitPos) {
-				snakeLen++;
-				isFruitExist = false;
-			}
-
 			//Отрисовка карты
 			std::cout << map;
-			std::cout << "fruit is on " << fruitPos << std::endl;
 
 			//Очищение карты
 			for (short i = 0; i < snakeLen; i++) {
@@ -159,5 +169,12 @@ int main() {
 		}
 
 	}
+
+	gotoxy(2, HIGHT / 2);
+	std::cout << "YOUR SCORE \n";
+	gotoxy(5, HIGHT / 2 + 1);
+	std::cout << "IS " << snakeLen << " !" << std::endl;
+	gotoxy(0, HIGHT + 1);
+	Sleep(30000);
 	return 0;
 }
